@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Divakar Singh - Tech Stack: Languages, frameworks, platforms, and tools used in production systems development">
+    <title>Tech Stack — Divakar Singh</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Matrix Code Rain Canvas -->
+    <canvas id="matrix-bg" aria-hidden="true"></canvas>
+
+    <!-- Navigation -->
+    <nav class="nav" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo" aria-label="Home">
+                <span class="logo-bracket">&lt;</span>DS<span class="logo-bracket"> /&gt;</span>
+            </a>
+
+            <!-- Hamburger Menu Button -->
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-link">
+                        <span class="nav-comment">// </span>Home</a></li>
+                <li><a href="index.html#about" class="nav-link">
+                        <span class="nav-comment">// </span>About</a></li>
+                <li><a href="skills.html" class="nav-link active">
+                        <span class="nav-comment">// </span>Tech Stack</a></li>
+                <li><a href="projects.html" class="nav-link">
+                        <span class="nav-comment">// </span>Projects</a></li>
+                <li><a href="experience.html" class="nav-link">
+                        <span class="nav-comment">// </span>Experience</a></li>
+                <li><a href="contact.html" class="nav-link">
+                        <span class="nav-comment">// </span>Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section" style="padding-top: 120px;">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-comment">// tech_stack.h</p>
+                <h2 class="section-title gradient-text">Tech Stack</h2>
+                <p class="section-subtitle">Languages, frameworks, and tools I use in production</p>
+            </div>
+
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><span class="category-icon">💻</span> Languages</h3>
+                    <div class="skill-tags">
+                        <code class="skill-tag">C++</code>
+                        <code class="skill-tag">C#</code>
+                        <code class="skill-tag">C</code>
+                        <code class="skill-tag">Python</code>
+                        <code class="skill-tag">SQL</code>
+                        <code class="skill-tag">Qt / Qt C++</code>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><span class="category-icon">⚙️</span> Systems & Architecture</h3>
+                    <div class="skill-tags">
+                        <code class="skill-tag">Distributed Systems</code>
+                        <code class="skill-tag">High-Availability Architecture</code>
+                        <code class="skill-tag">Multithreading & Concurrency</code>
+                        <code class="skill-tag">IPC (Shared Memory, Pipes, Sockets)</code>
+                        <code class="skill-tag">REST API Design</code>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><span class="category-icon">🌐</span> Network & Protocols</h3>
+                    <div class="skill-tags">
+                        <code class="skill-tag">TCP/IP</code>
+                        <code class="skill-tag">UDP</code>
+                        <code class="skill-tag">Socket Programming</code>
+                        <code class="skill-tag">Serial Communication</code>
+                        <code class="skill-tag">OPC UA</code>
+                        <code class="skill-tag">OPC DA</code>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><span class="category-icon">🖥️</span> Platforms</h3>
+                    <div class="skill-tags">
+                        <code class="skill-tag">Linux (RHEL, Ubuntu)</code>
+                        <code class="skill-tag">Windows</code>
+                        <code class="skill-tag">QNX RTOS</code>
+                        <code class="skill-tag">Embedded Linux</code>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><span class="category-icon">🚀</span> Performance & Reliability
+                    </h3>
+                    <div class="skill-tags">
+                        <code class="skill-tag">Latency Optimization</code>
+                        <code class="skill-tag">Throughput Engineering</code>
+                        <code class="skill-tag">Memory Management</code>
+                        <code class="skill-tag">Profiling & Debugging</code>
+                        <code class="skill-tag">Fault Tolerance</code>
+                        <code class="skill-tag">Watchdog Mechanisms</code>
+                        <code class="skill-tag">Health Monitoring</code>
+                        <code class="skill-tag">Logging & Telemetry</code>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3 class="skill-category-title"><span class="category-icon">🛠️</span> Toolchain</h3>
+                    <div class="skill-tags">
+                        <code class="skill-tag">CMake</code>
+                        <code class="skill-tag">GCC</code>
+                        <code class="skill-tag">Clang</code>
+                        <code class="skill-tag">Git</code>
+                        <code class="skill-tag">Cross-Compilation</code>
+                        <code class="skill-tag">LDRA</code>
+                        <code class="skill-tag">tcpdump</code>
+                        <code class="skill-tag">Wireshark</code>
+                        <code class="skill-tag">OPC UA Browser</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                <span class="footer-code">&lt;/&gt;</span> © 2026 Divakar Singh. Engineered with precision.
+                <span class="footer-code">// EOF</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>

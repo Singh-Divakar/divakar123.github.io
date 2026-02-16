@@ -142,34 +142,91 @@ function initMobileMenu() {
 }
 
 // ===========================
-// Smooth Scrolling Navigation
+// Multi-Page Navigation Handling
 // ===========================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    e.preventDefault();
-    const targetId = this.getAttribute('href');
-    if (targetId === '#') return;
+function initNavigation() {
+  // Handle smooth scrolling for same-page anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
 
-    const targetSection = document.querySelector(targetId);
-    if (targetSection) {
-      const navHeight = document.querySelector('.nav').offsetHeight;
-      const targetPosition = targetSection.offsetTop - navHeight;
+      const targetSection = document.querySelector(targetId);
+      if (targetSection) {
+        const navHeight = document.querySelector('.nav').offsetHeight;
+        const targetPosition = targetSection.offsetTop - navHeight;
 
-      window.scrollTo({
-        top: targetPosition,
-        behavior: 'smooth'
-      });
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // Handle cross-page links with hash (e.g., index.html#about)
+  // On page load, scroll to hash target if present
+  if (window.location.hash) {
+    setTimeout(() => {
+      const targetSection = document.querySelector(window.location.hash);
+      if (targetSection) {
+        const navHeight = document.querySelector('.nav').offsetHeight;
+        const targetPosition = targetSection.offsetTop - navHeight;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 300);
+  }
+}
+
+// ===========================
+// Active Navigation Link (Multi-Page)
+// ===========================
+function setActiveNavLink() {
+  const navLinks = document.querySelectorAll('.nav-link');
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  const currentHash = window.location.hash;
+
+  // Page-to-link mapping
+  const pageMap = {
+    'index.html': 'index.html',
+    'skills.html': 'skills.html',
+    'projects.html': 'projects.html',
+    'experience.html': 'experience.html',
+    'contact.html': 'contact.html'
+  };
+
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    const href = link.getAttribute('href');
+
+    // If we're on index.html and scrolled to #about, highlight About link
+    if (currentPage === 'index.html' || currentPage === '') {
+      if (currentHash === '#about' && href === 'index.html#about') {
+        link.classList.add('active');
+      } else if (!currentHash && href === 'index.html') {
+        link.classList.add('active');
+      }
+    } else {
+      // For other pages, match the filename
+      if (href === currentPage) {
+        link.classList.add('active');
+      }
     }
   });
-});
+}
 
-// ===========================
-// Active Navigation Link
-// ===========================
-function updateActiveNavLink() {
+// Update active link on scroll for index.html (Home vs About)
+function updateActiveNavOnScroll() {
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  if (currentPage !== 'index.html' && currentPage !== '') return;
+
   const sections = document.querySelectorAll('.section, .hero');
   const navLinks = document.querySelectorAll('.nav-link');
-  const navHeight = document.querySelector('.nav').offsetHeight;
+  const navHeight = document.querySelector('.nav') ? document.querySelector('.nav').offsetHeight : 0;
 
   let current = '';
 
@@ -184,14 +241,15 @@ function updateActiveNavLink() {
 
   navLinks.forEach(link => {
     link.classList.remove('active');
-    if (link.getAttribute('href') === `#${current}`) {
+    const href = link.getAttribute('href');
+
+    if (current === 'home' && href === 'index.html') {
+      link.classList.add('active');
+    } else if (current === 'about' && href === 'index.html#about') {
       link.classList.add('active');
     }
   });
 }
-
-window.addEventListener('scroll', updateActiveNavLink);
-window.addEventListener('load', updateActiveNavLink);
 
 // ===========================
 // Navbar Background on Scroll
@@ -358,7 +416,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initMatrixRain();
   initTypingEffect();
   initMobileMenu();
+  initNavigation();
+  setActiveNavLink();
 });
+
+// Update active nav on scroll (for index.html Home/About switching)
+window.addEventListener('scroll', updateActiveNavOnScroll);
 
 // ===========================
 // Console Message
