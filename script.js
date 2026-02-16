@@ -56,11 +56,11 @@ function initTypingEffect() {
   if (!typingElement) return;
 
   const phrases = [
-    'Systems Engineer · C++ & C#',
+    'Backend & Systems Engineer',
     'Distributed Systems Architect',
-    'Low-Latency Backend Developer',
+    'Low-Latency C++ / C# Developer',
     'Fault-Tolerant Service Builder',
-    'Performance Engineering Expert'
+    'Performance Engineering | Linux | QNX'
   ];
 
   let phraseIndex = 0;
