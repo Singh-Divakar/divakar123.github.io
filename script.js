@@ -1,11 +1,15 @@
 // ===========================
-// Matrix Code Rain Effect
+// Particle Network Background
 // ===========================
 function initMatrixRain() {
   const canvas = document.getElementById('matrix-bg');
   if (!canvas) return;
 
   const ctx = canvas.getContext('2d');
+  let particles = [];
+  const particleCount = 80;
+  const connectionDistance = 150;
+  let mouse = { x: null, y: null };
 
   function resize() {
     canvas.width = window.innerWidth;
@@ -14,38 +18,110 @@ function initMatrixRain() {
   resize();
   window.addEventListener('resize', resize);
 
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*(){}[]<>/\\|;:+=~`';
-  const fontSize = 14;
-  let columns = Math.floor(canvas.width / fontSize);
-  let drops = Array(columns).fill(1);
-
-  function draw() {
-    ctx.fillStyle = 'rgba(10, 15, 28, 0.06)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = '#00ff8822';
-    ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
-
-    for (let i = 0; i < drops.length; i++) {
-      const text = chars[Math.floor(Math.random() * chars.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-      drops[i]++;
-    }
-
-    requestAnimationFrame(draw);
-  }
-
-  // Recalculate columns on resize
-  window.addEventListener('resize', () => {
-    columns = Math.floor(canvas.width / fontSize);
-    drops = Array(columns).fill(1);
+  // Track mouse for interactive effect
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
   });
 
-  draw();
+  window.addEventListener('mouseout', () => {
+    mouse.x = null;
+    mouse.y = null;
+  });
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.6;
+      this.vy = (Math.random() - 0.5) * 0.6;
+      this.radius = Math.random() * 2 + 1;
+      this.opacity = Math.random() * 0.5 + 0.2;
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      // Bounce off edges
+      if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+      if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+      // Subtle mouse attraction
+      if (mouse.x !== null && mouse.y !== null) {
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 200) {
+          this.vx += dx * 0.00008;
+          this.vy += dy * 0.00008;
+        }
+      }
+
+      // Speed limit
+      const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+      if (speed > 1.2) {
+        this.vx = (this.vx / speed) * 1.2;
+        this.vy = (this.vy / speed) * 1.2;
+      }
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(108, 99, 255, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  // Initialize particles
+  function initParticles() {
+    particles = [];
+    const count = Math.min(particleCount, Math.floor((canvas.width * canvas.height) / 15000));
+    for (let i = 0; i < count; i++) {
+      particles.push(new Particle());
+    }
+  }
+  initParticles();
+
+  window.addEventListener('resize', () => {
+    resize();
+    initParticles();
+  });
+
+  function drawConnections() {
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < connectionDistance) {
+          const opacity = (1 - dist / connectionDistance) * 0.15;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(108, 99, 255, ${opacity})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      p.update();
+      p.draw();
+    });
+
+    drawConnections();
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 }
 
 // ===========================
@@ -56,11 +132,11 @@ function initTypingEffect() {
   if (!typingElement) return;
 
   const phrases = [
-    'Backend & Systems Engineer',
-    'Distributed Systems Architect',
-    'Low-Latency C++ / C# Developer',
-    'Fault-Tolerant Service Builder',
-    'Performance Engineering | Linux | QNX'
+    'Software Developer',
+    'Systems & Backend Architect',
+    'Building Scalable Solutions',
+    'Low-Latency C++ / C# Engineer',
+    'Distributed Systems Builder'
   ];
 
   let phraseIndex = 0;
@@ -259,10 +335,10 @@ function updateNavbarBackground() {
   if (!navbar) return;
 
   if (window.scrollY > 50) {
-    navbar.style.background = 'rgba(10, 15, 28, 0.95)';
-    navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 255, 136, 0.05)';
+    navbar.style.background = 'rgba(15, 14, 23, 0.95)';
+    navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(108, 99, 255, 0.05)';
   } else {
-    navbar.style.background = 'rgba(10, 15, 28, 0.85)';
+    navbar.style.background = 'rgba(15, 14, 23, 0.85)';
     navbar.style.boxShadow = 'none';
   }
 }
@@ -350,7 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
         position: absolute;
         width: 5px;
         height: 5px;
-        background: rgba(0, 255, 136, 0.5);
+        background: rgba(108, 99, 255, 0.5);
         border-radius: 50%;
         transform: scale(0);
         animation: ripple 0.6s ease-out;
@@ -426,6 +502,6 @@ window.addEventListener('scroll', updateActiveNavOnScroll);
 // ===========================
 // Console Message
 // ===========================
-console.log('%c> SYSTEM ONLINE', 'color: #00ff88; font-size: 20px; font-weight: bold; font-family: "JetBrains Mono", monospace;');
-console.log('%c> Divakar Singh — Senior Software Engineer', 'color: #00d4ff; font-size: 14px; font-family: "JetBrains Mono", monospace;');
-console.log('%c> Interested in the source? Let\'s connect.', 'color: #7a9b8a; font-size: 12px; font-family: "JetBrains Mono", monospace;');
+console.log('%c> BUILD SUCCESSFUL', 'color: #6C63FF; font-size: 20px; font-weight: bold; font-family: "JetBrains Mono", monospace;');
+console.log('%c> Divakar Singh — Software Developer', 'color: #00D9FF; font-size: 14px; font-family: "JetBrains Mono", monospace;');
+console.log('%c> Interested in the source? Let\'s connect.', 'color: #9a95b0; font-size: 12px; font-family: "JetBrains Mono", monospace;');
